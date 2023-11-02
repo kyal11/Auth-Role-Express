@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize";
+import { Sequelize, UUIDV4 } from "sequelize";
 import db from "../config/db"
 
 const Datatypes = { Sequelize }
@@ -6,6 +6,7 @@ const Datatypes = { Sequelize }
 const Users = db.define('user', {
     uuid:{
         type: Datatypes.STRING,
+        defaultValue: UUIDV4,
         allowNull: false,
         validate:{
             notEmpty:true
