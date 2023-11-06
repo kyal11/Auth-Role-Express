@@ -26,7 +26,7 @@ class productController {
     }
 
     static async createProduct(req, res){
-        
+       
     }
 
     static async updateProduct(req, res){
