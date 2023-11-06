@@ -1,5 +1,5 @@
 import express from "express"
-import productController from "../controller/products"
+import productController from "../controller/products.js"
 
 const router = express.Router()
 const controller = new productController()

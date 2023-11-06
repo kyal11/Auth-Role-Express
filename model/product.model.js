@@ -1,18 +1,20 @@
 import { Sequelize } from "sequelize";
-import db from "../config/db"
-import Users from "./user.model"
-const Datatypes = { Sequelize }
+import db from "../config/db.js"
+import Users from "./user.model.js"
+
+const {DataTypes} = Sequelize 
 
 const Products = db.define('product', {
     uuid:{
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
+        defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         validate:{
             notEmpty:true
         }
     },
     name: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         validate:{
             notEmpty: true,
@@ -20,7 +22,7 @@ const Products = db.define('product', {
         }
     },
     price: {
-        type: Datatypes.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate:{
             notEmpty: true,
@@ -28,14 +30,14 @@ const Products = db.define('product', {
         }
     },
     qty: {
-        type: Datatypes.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate:{
             notEmpty:true
         }
     },
     user_id: {
-        type: Datatypes.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate:{
             notEmpty:true
@@ -48,4 +50,4 @@ const Products = db.define('product', {
 Users.hasMany(Products)
 Products.belongsTo(Users, {foreignKey: 'user_id'})
 
-module.exports = Products
+export default Products

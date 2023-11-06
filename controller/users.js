@@ -1,22 +1,23 @@
-import Users from "../model/user.model"
+//import { Sequelize } from "sequelize"
+import Users from "../model/user.model.js"
 import  argon2  from "argon2"
 
 class userController{
-    async getUser(req, res){
+    static async getUser(req, res){
         try{
             const user = await Users.findAll()
-            if(user == null) return res.status(404).json({msg: "user data not found"})
+            if(user === null) return res.status(404).json({msg: "user data not found"})
             res.status(200).json(user)
         }catch(err){
             res.status(500).json({msg: error.message})
         }
     }
 
-    async getUserById(req, res){
+    static async getUserById(req, res){
         try{
             const user = await Users.findOne({
                 where: {
-                    uuid:req.params.id
+                    uuid: req.params.id
                 }
             })
             if(user == null) return res.status(404).json({msg: "user data not found"})
@@ -26,7 +27,7 @@ class userController{
         }
     }
 
-    async createUser(req, res){
+    static async createUser(req, res){
         const {name, email, password, confPassword, role} = req.body
         if(password != confPassword) return res.status(400).json({msg: "Password and confirm Password don't match"})
         
@@ -38,18 +39,49 @@ class userController{
                 role: role
             })   
             res.status(201).json({msg: "Register Successful"})
-        }catch(err){
+        }catch(error){
             res.status(500).json({msg: error.message})
         }
     }
 
-    async updateUser(){
-        
+    static async updateUser(req, res) {
+        const { name, email, password } = req.body;
+        const update = {};
+    
+        if (name !== undefined) {
+            update.name = name;
+        }
+        if (email !== undefined) {
+            update.email = email;
+        }
+        if (password !== undefined) {
+            update.password = await argon2.hash(password);
+        }
+    
+        try {
+            const user = await Users.findOne({ where: { uuid: req.params.id } });
+            if (user == null) return res.status(404).json({ msg: "User data not found" });
+            await Users.update(update, { where: { uuid: req.params.id } });
+            res.status(200).json({ msg: "Update Account Successful" });
+        } catch (error) {
+            res.status(500).json({ msg: error.message });
+        }
     }
+    
 
-    async deleteUser(){
-        
+    static async deleteUser(req, res){
+        try{
+            const user = await Users.findOne({ where: {
+                uuid: req.params.id
+            }})
+            if(user == null) return res.status(404).json({msg: "user data not found"})
+
+            user.destroy({where:{ uuid: user.uuid}})
+            res.status(201).json({msg: "Delete Account Successful"})
+        }catch(error){
+            res.status(500).json({ msg: error.message });
+        }   
     }
 }
 
-module.exports = userController
+export default userController
