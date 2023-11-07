@@ -1,15 +1,15 @@
 //import { Sequelize } from "sequelize"
-import Users from "../model/user.model.js"
-import  argon2  from "argon2"
+import Users from "../model/user.model.js";
+import  argon2  from "argon2";
 
 class userController{
     static async getUser(req, res){
         try{
-            const user = await Users.findAll()
-            if(user === null) return res.status(404).json({msg: "user data not found"})
-            res.status(200).json(user)
+            const user = await Users.findAll();
+            if(user === null) return res.status(404).json({msg: "user data not found"});
+            res.status(200).json(user);
         }catch(err){
-            res.status(500).json({msg: error.message})
+            res.status(500).json({msg: error.message});
         }
     }
 
@@ -19,17 +19,17 @@ class userController{
                 where: {
                     uuid: req.params.id
                 }
-            })
-            if(user == null) return res.status(404).json({msg: "user data not found"})
-            res.status(200).json(user)
+            });
+            if(user == null) return res.status(404).json({msg: "user data not found"});
+            res.status(200).json(user);
         }catch(err){
-            res.status(500).json({msg: error.message})
+            res.status(500).json({msg: error.message});
         }
     }
 
     static async createUser(req, res){
-        const {name, email, password, confPassword, role} = req.body
-        if(password != confPassword) return res.status(400).json({msg: "Password and confirm Password don't match"})
+        const {name, email, password, confPassword, role} = req.body;
+        if(password != confPassword) return res.status(400).json({msg: "Password and confirm Password don't match"});
         
         try{
             await Users.create({
@@ -37,10 +37,10 @@ class userController{
                 email: email,
                 password: await argon2.hash(password),
                 role: role
-            })   
-            res.status(201).json({msg: "Register Successful"})
+            });   
+            res.status(201).json({msg: "Register Successful"});
         }catch(error){
-            res.status(500).json({msg: error.message})
+            res.status(500).json({msg: error.message});
         }
     }
 
@@ -73,15 +73,15 @@ class userController{
         try{
             const user = await Users.findOne({ where: {
                 uuid: req.params.id
-            }})
-            if(user == null) return res.status(404).json({msg: "user data not found"})
+            }});
+            if(user == null) return res.status(404).json({msg: "user data not found"});
 
-            user.destroy({where:{ uuid: user.uuid}})
-            res.status(201).json({msg: "Delete Account Successful"})
+            user.destroy({where:{ uuid: user.uuid}});
+            res.status(201).json({msg: "Delete Account Successful"});
         }catch(error){
             res.status(500).json({ msg: error.message });
         }   
     }
 }
 
-export default userController
+export default userController;

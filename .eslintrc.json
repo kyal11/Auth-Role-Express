@@ -11,6 +11,7 @@
     "rules": {
         "prefer-const": "error",
         "no-undef": 0,
-        "no-console": "off"
+        "no-console": "off",
+        "semi": ["error", "always"]
     }
 }

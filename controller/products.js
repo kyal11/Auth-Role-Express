@@ -1,14 +1,14 @@
-import Products from "../model/product.model.js"
+import Products from "../model/product.model.js";
 import {Op} from "sequelize";
 class productController {
     static async getProduct(req, res){
         try{
-            const product = await Products.findAll({attributes: ['id', 'uuid', 'name', 'price', 'qty', 'user_id']})
-            if(product === null) return res.status(404).json({msg: "product data not found"})
+            const product = await Products.findAll({attributes: ['id', 'uuid', 'name', 'price', 'qty', 'user_id']});
+            if(product === null) return res.status(404).json({msg: "product data not found"});
 
-            res.status(200).json(product)
+            res.status(200).json(product);
         }catch(error){
-            res.status(500).json({msg: error.message})
+            res.status(500).json({msg: error.message});
         }
     }
 
@@ -17,25 +17,25 @@ class productController {
             const product = await Products.findOne({
                 attributes: ['id', 'uuid', 'name', 'price', 'qty', 'user_id'],
                 where: { id: req.params.id }
-            })
-            if(product === null) return res.status(404).json({msg: "product data not found"})
+            });
+            if(product === null) return res.status(404).json({msg: "product data not found"});
 
-            res.status(200).json(product)
+            res.status(200).json(product);
         }catch(error){
-            res.status(500).json({msg: error.message})
+            res.status(500).json({msg: error.message});
         }
     }
 
     static async createProduct(req, res){
-       const {name, price, qty} = req.body
+       const {name, price, qty} = req.body;
        try {
-            const user = req.userId
+            const user = req.userId;
             await Products.create({
                 name: name,
                 price: price,
                 qty: qty,
                 user_id: user
-            })
+            });
 
             res.status(201).json({msg: "Product Created Successfuly"});
        } catch (error) {
@@ -59,7 +59,7 @@ class productController {
     
         try {
             if(req.role == "admin"){
-                console.log('admin')
+                console.log('admin');
                  const product = await Products.findOne(
                     { attributes: ['id', 'uuid', 'name', 'price', 'qty', 'user_id'],
                       where: { id: req.params.id } 
@@ -67,7 +67,7 @@ class productController {
                  if (product == null) return res.status(404).json({ msg: "product not found" });
                  await Products.update(update, { where: { id: req.params.id } });
             }else if (req.role == "user"){
-                console.log('user')
+                console.log('user');
                 const product = await Products.findOne(
                     { attributes: ['id', 'uuid', 'name', 'price', 'qty', 'user_id'],
                       where: {
@@ -75,7 +75,7 @@ class productController {
                      }   
                     });
                 if (product == null) return res.status(404).json({ msg: "product not found" });
-                await Products.update(update, { where: {id: req.params.id } })
+                await Products.update(update, { where: {id: req.params.id } });
             }
     
             res.status(200).json({ msg: "Update Product Successful" });
@@ -110,4 +110,4 @@ class productController {
     }
 }
 
-export default productController
+export default productController;
