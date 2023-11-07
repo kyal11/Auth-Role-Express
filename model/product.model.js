@@ -25,8 +25,7 @@ const Products = db.define('product', {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate:{
-            notEmpty: true,
-            isEmail: true
+            notEmpty: true
         }
     },
     qty: {

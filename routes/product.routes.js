@@ -1,27 +1,27 @@
 import express from "express"
 import productController from "../controller/products.js"
-
+import {userVerification} from "../middleware/AuthUser.js"
 const router = express.Router()
-const controller = new productController()
 
-router.get('/products', (req, res) => {
-    controller.getUser(req, res);
+
+router.get('/products',userVerification ,(req, res) => {
+    productController.getProduct(req, res)
 });
   
-router.get('/products/:id', (req, res) => {
-    controller.getProductById(req, res);
+router.get('/products/:id',userVerification ,(req, res) => {
+    productController.getProductById(req, res)
 });
 
-router.post('/products/:id', (req, res) => {
-    controller.createProduct(req, res);
+router.post('/products',userVerification ,(req, res) => {
+    productController.createProduct(req, res)
 });
 
-router.put('/products/:id', (req, res) => {
-    controller.updateProduct(req, res);
+router.patch('/products/:id',userVerification ,(req, res) => {
+    productController.updateProduct(req, res)
 });
 
-router.delete('/products/:id', (req, res) => {
-    controller.deleteProduct(req, res);
+router.delete('/products/:id',userVerification ,(req, res) => {
+    productController.deleteProduct(req, res)
 });
 
 export default router

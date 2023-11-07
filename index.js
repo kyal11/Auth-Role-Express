@@ -49,7 +49,6 @@ app.use(userRoute)
 app.use(productRoute)
 app.use(AuthRoute)
 
-store.sync();
 
 const PORT = process.env.APP_PORT
 

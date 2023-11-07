@@ -1,6 +1,5 @@
 import  express  from "express"
 import AuthController from "../controller/auth.js"
-
 const router = express.Router()
 
 router.get('/account', (req, res) => {
