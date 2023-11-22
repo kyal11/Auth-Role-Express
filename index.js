@@ -5,9 +5,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 import userRoute from "./routes/user.routes.js";
 import productRoute from "./routes/product.routes.js";
+import orderRoute from "./routes/order.routes.js";
 import AuthRoute from "./routes/auth.routes.js";
 import db from "./config/db.js";
 import SequelizeStore from "connect-session-sequelize";
+
 dotenv.config();
 
 const app = express(); 
@@ -47,6 +49,7 @@ app.use(express.json());
  
 app.use(userRoute);
 app.use(productRoute);
+app.use(orderRoute);
 app.use(AuthRoute);
 
 
